@@ -67,14 +67,6 @@ namespace Pong
         //brush for paint method
         SolidBrush drawBrush = new SolidBrush(Color.Black);
 
-        #endregion
-
-        public Form1()
-        {
-            InitializeComponent();
-            SetParameters();        
-        }
-
         /// <summary>
         /// Plays the soundtrack
         /// </summary>
@@ -83,6 +75,14 @@ namespace Pong
             mp3Player = new WindowsMediaPlayer();
             mp3Player.URL = "Dagger.mp3";
             mp3Player.settings.setMode("loop", true);
+        }
+
+        #endregion
+
+        public Form1()
+        {
+            InitializeComponent();
+            SetParameters();        
         }
 
         // -- YOU DO NOT NEED TO MAKE CHANGES TO THIS METHOD

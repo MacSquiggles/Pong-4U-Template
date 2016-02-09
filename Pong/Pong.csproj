@@ -83,7 +83,6 @@
   <ItemGroup>
     <Content Include="ramlogo.ico" />
     <None Include="Resources\background.jpg" />
-    <Content Include="Resources\sweg dance giffy thing bro.gif" />
     <None Include="Resources\collision.wav" />
     <None Include="Resources\score.wav" />
     <None Include="Resources\wall bounce.wav" />
