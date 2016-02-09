@@ -34,6 +34,8 @@
             this.closeButton = new System.Windows.Forms.Button();
             this.player1Label = new System.Windows.Forms.Label();
             this.player2Label = new System.Windows.Forms.Label();
+            this.glassesImage = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.glassesImage)).BeginInit();
             this.SuspendLayout();
             // 
             // gameUpdateLoop
@@ -46,15 +48,17 @@
             this.startLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.startLabel.BackColor = System.Drawing.Color.White;
-            this.startLabel.Font = new System.Drawing.Font("Courier New", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.startLabel.BackColor = System.Drawing.Color.Transparent;
+            this.startLabel.Font = new System.Drawing.Font("Courier New", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.startLabel.ForeColor = System.Drawing.Color.Black;
             this.startLabel.Location = new System.Drawing.Point(158, 175);
             this.startLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.startLabel.Name = "startLabel";
-            this.startLabel.Size = new System.Drawing.Size(615, 143);
+            this.startLabel.Size = new System.Drawing.Size(615, 406);
             this.startLabel.TabIndex = 0;
-            this.startLabel.Text = "Press Space To Start";
+            this.startLabel.Text = "     Hipster Pong                                                                " +
+    "                                                                     Press Space" +
+    " To Start";
             this.startLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // closeButton
@@ -62,6 +66,7 @@
             this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.closeButton.BackColor = System.Drawing.Color.White;
             this.closeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.closeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.closeButton.ForeColor = System.Drawing.Color.Black;
             this.closeButton.Location = new System.Drawing.Point(892, -2);
             this.closeButton.Margin = new System.Windows.Forms.Padding(0);
@@ -76,8 +81,8 @@
             // player1Label
             // 
             this.player1Label.AutoSize = true;
-            this.player1Label.BackColor = System.Drawing.Color.White;
-            this.player1Label.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player1Label.BackColor = System.Drawing.Color.Transparent;
+            this.player1Label.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.player1Label.ForeColor = System.Drawing.Color.Black;
             this.player1Label.Location = new System.Drawing.Point(42, 3);
             this.player1Label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
@@ -85,13 +90,14 @@
             this.player1Label.Size = new System.Drawing.Size(180, 27);
             this.player1Label.TabIndex = 2;
             this.player1Label.Text = "Player 1:  0";
+            this.player1Label.Visible = false;
             // 
             // player2Label
             // 
             this.player2Label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.player2Label.AutoSize = true;
-            this.player2Label.BackColor = System.Drawing.Color.White;
-            this.player2Label.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player2Label.BackColor = System.Drawing.Color.Transparent;
+            this.player2Label.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.player2Label.ForeColor = System.Drawing.Color.Black;
             this.player2Label.Location = new System.Drawing.Point(645, 3);
             this.player2Label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
@@ -99,14 +105,27 @@
             this.player2Label.Size = new System.Drawing.Size(180, 27);
             this.player2Label.TabIndex = 3;
             this.player2Label.Text = "Player 2:  0";
+            this.player2Label.Visible = false;
+            // 
+            // glassesImage
+            // 
+            this.glassesImage.BackColor = System.Drawing.Color.Black;
+            this.glassesImage.Image = global::Pong.Properties.Resources.glassesgif;
+            this.glassesImage.Location = new System.Drawing.Point(248, 289);
+            this.glassesImage.Name = "glassesImage";
+            this.glassesImage.Size = new System.Drawing.Size(430, 190);
+            this.glassesImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.glassesImage.TabIndex = 4;
+            this.glassesImage.TabStop = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Purple;
-            this.BackgroundImage = global::Pong.Properties.Resources.background;
+            this.BackgroundImage = global::Pong.Properties.Resources.background1;
             this.ClientSize = new System.Drawing.Size(924, 692);
+            this.Controls.Add(this.glassesImage);
             this.Controls.Add(this.player2Label);
             this.Controls.Add(this.player1Label);
             this.Controls.Add(this.closeButton);
@@ -120,6 +139,7 @@
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
+            ((System.ComponentModel.ISupportInitialize)(this.glassesImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -132,6 +152,7 @@
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.Label player1Label;
         private System.Windows.Forms.Label player2Label;
+        private System.Windows.Forms.PictureBox glassesImage;
     }
 }
 

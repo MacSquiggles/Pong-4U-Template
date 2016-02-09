@@ -26,9 +26,6 @@ namespace Pong
     {
         #region global values
 
-        WindowsMediaPlayer mp3Player;
-        Thread musicThread;
-
         bool start = true;
 
         //paddle position variables
@@ -45,27 +42,35 @@ namespace Pong
         Boolean ballMoveDown = false;
 
         //constants used to set size and speed of paddles 
-        const int PADDLE_LENGTH = 40;
+        int PADDLE_LENGTH1 = 60;
+        int PADDLE_LENGTH2 = 60;
         const int PADDLE_WIDTH = 10;
         const int PADDLE_EDGE = 20;  // buffer distance between screen edge and paddle
-        const int PADDLE_SPEED = 4;
+        int PADDLE_SPEED1 = 10;
+        int PADDLE_SPEED2 = 10;
 
         //constants used to set size and speed of ball 
         const int BALL_SIZE = 10;
-        const int BALL_SPEED = 4;
+        const int BALL_SPEED = 10;
 
         //player scores
-        int player1Score = 0;
-        int player2Score = 0;
+        int player1Score = -1;
+        int player2Score = -1;
 
         //determines whether a key is being pressed or not
         Boolean aKeyDown, zKeyDown, jKeyDown, mKeyDown;
 
-        //game winning score
-        int gameWinScore = 10;
+        //game ends after a player receives 8 points
+        int gameWinScore = 8;
 
         //brush for paint method
         SolidBrush drawBrush = new SolidBrush(Color.Black);
+        #endregion
+
+        #region music
+        //MP3 Player background
+        WindowsMediaPlayer mp3Player;
+        Thread musicThread;
 
         /// <summary>
         /// Plays the soundtrack
@@ -73,14 +78,19 @@ namespace Pong
         public void backMusic()
         {
             mp3Player = new WindowsMediaPlayer();
-            mp3Player.URL = "Dagger.mp3";
+            mp3Player.URL = "Chelsea Dagger HQ.mp3";
             mp3Player.settings.setMode("loop", true);
         }
-
         #endregion
 
         public Form1()
         {
+            //Allows the music to play without affecting the functions of the game
+            musicThread = new Thread(backMusic);
+            musicThread.Start();
+            while (!musicThread.IsAlive)
+            {
+            }
             InitializeComponent();
             SetParameters();        
         }
@@ -155,14 +165,18 @@ namespace Pong
         /// </summary>
         private void GameStart()
         {
+
             newGameOk = true;
             SetParameters();
 
             // TODO create code to make a graphics object, a brush, and a font to display the countdown
             Graphics formGraphics = this.CreateGraphics();
             Font drawFont = new Font("Courier New", 30, FontStyle.Regular);
-            SolidBrush drawBrush = new SolidBrush(Color.White);
+            SolidBrush drawBrush = new SolidBrush(Color.Black);
+            
+            //Sets the menu text and images to invisibe and makes the score labels visible
             startLabel.Visible = false;
+            glassesImage.Visible = false;
             Refresh();
 
             //countdown to start of game
@@ -177,6 +191,9 @@ namespace Pong
             // TODO start the gameUpdateLoop timer
             gameUpdateLoop.Enabled = true;
             newGameOk = false;
+            player1Label.Visible = true;
+            player2Label.Visible = true;
+            Refresh();
         }
 
         /// <summary>
@@ -195,17 +212,20 @@ namespace Pong
                 player1Label.Text = "Player 1:  " + player1Score;
                 player2Label.Text = "Player 2:  " + player2Score;
 
-                paddle1Y = paddle2Y = this.Height / 2 - PADDLE_LENGTH / 2;
+                //resets the paddle length to start the game
+                PADDLE_LENGTH1 = 60;
+                PADDLE_LENGTH2 = 60;
+
+                paddle1Y = this.Height / 2 - PADDLE_LENGTH1 / 2;
+                paddle2Y = this.Height / 2 - PADDLE_LENGTH2 / 2;
 
             }
             else
             {
+                //sets the ball at the starting point of the screen
                 ballY = this.Height / 2 - BALL_SIZE;
                 ballX = this.Width / 2 + BALL_SIZE;
             }
-
-            // TODO set starting X position for ball to middle of screen, (use this.Width and BALL_SIZE)
-            // TODO set starting Y position for ball to middle of screen, (use this.Height and BALL_SIZE)
 
         }
 
@@ -247,22 +267,22 @@ namespace Pong
             // TODO create code to move player 1 paddle up and down using paddle1Y and PADDLE_SPEED
             if (aKeyDown == true && paddle1Y > 0)
             {
-                paddle1Y = paddle1Y - PADDLE_SPEED;
+                paddle1Y = paddle1Y - PADDLE_SPEED1;
             }
             if (zKeyDown == true && paddle1Y < this.Height - 40)
             {
-                paddle1Y = paddle1Y + PADDLE_SPEED;
+                paddle1Y = paddle1Y + PADDLE_SPEED1;
             }
 
             // TODO create an if statement and code to move player 2 paddle up using paddle2Y and PADDLE_SPEED
 
             if (jKeyDown == true && paddle2Y > 0)
             {
-                paddle2Y = paddle2Y - PADDLE_SPEED;
+                paddle2Y = paddle2Y - PADDLE_SPEED2;
             }
             if (mKeyDown == true && paddle2Y < this.Height - 40)
             {
-                paddle2Y = paddle2Y + PADDLE_SPEED;
+                paddle2Y = paddle2Y + PADDLE_SPEED2;
             }
             #endregion
 
@@ -289,14 +309,14 @@ namespace Pong
 
             #region ball collision with paddles
 
-            if (ballY > paddle1Y && ballY < paddle1Y + PADDLE_LENGTH && ballX < PADDLE_EDGE + PADDLE_WIDTH) // left paddle collision
+            if (ballY > paddle1Y && ballY < paddle1Y + PADDLE_LENGTH1 && ballX < PADDLE_EDGE + PADDLE_WIDTH) // left paddle collision
             {
                 // TODO play a "paddle hit" sound 
                 // TODO use ballMoveRight boolean to change direction
                 player.Play();
                 ballMoveRight = true;
             }
-            else if (ballY > paddle2Y && ballY < paddle2Y + PADDLE_LENGTH && ballX + BALL_SIZE > this.Width - PADDLE_EDGE - PADDLE_WIDTH / 2) // right paddle collision
+            else if (ballY > paddle2Y && ballY < paddle2Y + PADDLE_LENGTH2 && ballX + BALL_SIZE > this.Width - PADDLE_EDGE - PADDLE_WIDTH / 2) // right paddle collision
             {
                 // TODO play a "paddle hit" sound 
                 // TODO use ballMoveRight boolean to change direction
@@ -310,10 +330,20 @@ namespace Pong
 
             player = new SoundPlayer(Properties.Resources.score);
 
+            //If ball hits left wall
             if (ballX < 0) 
             {
                 player2Score++;
                 player2Label.Text = "Player 2: " + Convert.ToString(player2Score);
+                if (player2Score < 4 && PADDLE_LENGTH1 > 20)
+                {
+                    PADDLE_LENGTH1 = PADDLE_LENGTH1 - 5;
+                }
+                else if (player2Score >4 && PADDLE_LENGTH1 >20)
+                {
+                    PADDLE_LENGTH1 = PADDLE_LENGTH1 - 10;
+                    PADDLE_SPEED1--;
+                }
                 Refresh();
                 if (player2Score == gameWinScore)
                 {
@@ -323,14 +353,22 @@ namespace Pong
                 {
                     SetParameters();
                 }
-                // --- use if statement to check to see if player 2 has won the game. If true run 
-                // gameWinScore method. Else call SetParameters method to reset ball position.
             }
 
-            if (ballX >= this.Width)  // TODO ball hits right wall logic
+            // if ball hits right wall logic
+            if (ballX >= this.Width)  
             {
                 player1Score++;
                 player1Label.Text = "Player 1: " + Convert.ToString(player1Score);
+                if (player1Score < 4 && PADDLE_LENGTH2 > 20)
+                {
+                    PADDLE_LENGTH2 = PADDLE_LENGTH2 - 3;
+                }
+                else if (player1Score > 4 && PADDLE_LENGTH2 > 20)
+                {
+                    PADDLE_LENGTH2 = PADDLE_LENGTH2 - 10;
+                    PADDLE_SPEED2--;
+                }
                 Refresh();
                 if (player1Score == gameWinScore)
                 {
@@ -367,11 +405,6 @@ namespace Pong
             Thread.Sleep(2000);
             startLabel.Text = "Would you like to play again? (Y/N)";
             Refresh();
-            // TODO create game over logic
-            // --- stop the gameUpdateLoop
-            // --- show a message on the startLabel to indicate a winner
-            // --- pause for two seconds 
-            // --- use the startLabel to ask the user if they want to play again
 
         }
 
@@ -391,8 +424,8 @@ namespace Pong
                     start = false;
                 }
                 // TODO draw paddles using FillRectangle
-                e.Graphics.FillRectangle(drawBrush, PADDLE_EDGE - PADDLE_WIDTH, paddle1Y, PADDLE_WIDTH, PADDLE_LENGTH);
-                e.Graphics.FillRectangle(drawBrush, this.Width - PADDLE_EDGE, paddle2Y, PADDLE_WIDTH, PADDLE_LENGTH);
+                e.Graphics.FillRectangle(drawBrush, PADDLE_EDGE - PADDLE_WIDTH, paddle1Y, PADDLE_WIDTH, PADDLE_LENGTH1);
+                e.Graphics.FillRectangle(drawBrush, this.Width - PADDLE_EDGE, paddle2Y, PADDLE_WIDTH, PADDLE_LENGTH2);
 
                 // TODO draw ball using FillRectangle
 

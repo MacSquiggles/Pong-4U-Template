@@ -82,6 +82,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ramlogo.ico" />
+    <None Include="Resources\Hipstergif.gif" />
+    <None Include="Resources\thirdTry.gif" />
+    <None Include="Resources\background1.jpg" />
+    <None Include="Resources\glassesgif.gif" />
+    <None Include="Resources\hipsterglasses.gif" />
     <None Include="Resources\background.jpg" />
     <None Include="Resources\collision.wav" />
     <None Include="Resources\score.wav" />
