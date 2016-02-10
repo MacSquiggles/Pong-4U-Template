@@ -423,16 +423,14 @@ namespace Pong
                     ballY = this.Height / 2;
                     start = false;
                 }
-                // TODO draw paddles using FillRectangle
+                //Draws the paddles using FillRectangle
                 e.Graphics.FillRectangle(drawBrush, PADDLE_EDGE - PADDLE_WIDTH, paddle1Y, PADDLE_WIDTH, PADDLE_LENGTH1);
                 e.Graphics.FillRectangle(drawBrush, this.Width - PADDLE_EDGE, paddle2Y, PADDLE_WIDTH, PADDLE_LENGTH2);
 
-                // TODO draw ball using FillRectangle
-
+                //Draws the ball using FillRectangle
                 e.Graphics.FillRectangle(drawBrush, ballX, ballY, BALL_SIZE, BALL_SIZE);
             }
             
         }
-
     }
 }
