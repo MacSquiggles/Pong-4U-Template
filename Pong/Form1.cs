@@ -1,7 +1,7 @@
 ﻿/*
  * Description:     A basic PONG simulator
  * Author:   Quigley        
- * Date:     Febuary 4th 2016       
+ * Date:     February 4th 2016       
  */
 
 #region libraries
@@ -51,7 +51,7 @@ namespace Pong
 
         //constants used to set size and speed of ball 
         const int BALL_SIZE = 10;
-        const int BALL_SPEED = 10;
+        const int BALL_SPEED = 15;
 
         //player scores
         int player1Score = -1;
@@ -333,6 +333,7 @@ namespace Pong
             //If ball hits left wall
             if (ballX < 0) 
             {
+                player.Play();
                 player2Score++;
                 player2Label.Text = "Player 2: " + Convert.ToString(player2Score);
                 if (player2Score < 4 && PADDLE_LENGTH1 > 20)
@@ -358,6 +359,7 @@ namespace Pong
             // if ball hits right wall logic
             if (ballX >= this.Width)  
             {
+                player.Play();
                 player1Score++;
                 player1Label.Text = "Player 1: " + Convert.ToString(player1Score);
                 if (player1Score < 4 && PADDLE_LENGTH2 > 20)
@@ -404,6 +406,8 @@ namespace Pong
             Refresh();
             Thread.Sleep(2000);
             startLabel.Text = "Would you like to play again? (Y/N)";
+            PADDLE_SPEED1 = 10;
+            PADDLE_SPEED2 = 10;
             Refresh();
 
         }
